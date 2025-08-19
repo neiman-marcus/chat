@@ -18,3 +18,17 @@ public struct SFConfig: Codable {
         case conversationId = "conversation_id"
     }
 }
+
+
+public struct SFTheme: Codable {
+    let onPrimary, onPrimaryContainer, primary, primaryContainer, secondary, secondaryContainer: String
+
+    enum CodingKeys: String, CodingKey {
+        case onPrimary = "SMI.onPrimary"
+        case onPrimaryContainer = "SMI.onPrimaryContainer"
+        case primary = "SMI.primary"
+        case primaryContainer = "SMI.primaryContainer"
+        case secondary = "SMI.secondary"
+        case secondaryContainer = "SMI.secondaryContainer"
+    }
+}
