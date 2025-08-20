@@ -9,7 +9,7 @@ public struct SFConfig: Codable {
     let url: String
     let scrt2URL : String
     public var conversationId : String
-
+    
     enum CodingKeys: String, CodingKey {
         case organizationID = "OrganizationId"
         case developerName = "DeveloperName"

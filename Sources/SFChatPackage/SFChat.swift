@@ -1,4 +1,5 @@
 import SMIClientUI
+import SMIClientCore
 import SwiftUICore
 import SwiftUI 
 
@@ -16,7 +17,7 @@ public class SFChat : @unchecked Sendable {
         let orgId = conf.organizationID
         let developerName = conf.developerName
         let conversationId = UUID(uuidString: conf.conversationId)!
-        let url = URL(string: conf.url)!
+        let url = URL(string: conf.scrt2URL)!
         DispatchQueue.main.async {
             SFChat.shared.config = UIConfiguration(serviceAPI: url,
                                                    organizationId: orgId,
@@ -50,11 +51,16 @@ public class SFChat : @unchecked Sendable {
             SFChat.shared.state.objectWillChange.send()
         }
     }
+    
     public func checkIfConnected(callback:@escaping (Bool) -> Void) {
         if (SFChat.shared.config != nil) {
             callback(true)
         } else {
             callback(false)
         }
+    }
+    
+    func setupTestCore() {
+        SFChatCore.shared.testSetup()
     }
 }

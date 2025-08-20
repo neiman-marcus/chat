@@ -20,8 +20,9 @@ public struct ConversationView: View {
     let timer = Timer.publish(every: 3, on: .current, in: .common).autoconnect()
     
     public var body: some View {
-        VStack {
-            if SFChat.shared.state.isConfigured {
+        
+        VStack{
+            if(SFChat.shared.state.isConfigured){
                 Interface(SFChat.shared.config!)
                     .background(Color(hex: SFChat.shared.theme?.primaryContainer ?? "#FFFFFF"))
             } else {
