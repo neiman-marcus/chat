@@ -1,21 +1,18 @@
-//
-//  SFChat.swift
-//  SFChatPackage
-//
-//  Created by Vivek Kumar on 28/07/25.
-//
 import SMIClientUI
 import SwiftUICore
-public class SFChat :@unchecked Sendable{
+import SwiftUI 
+
+public class SFChat : @unchecked Sendable {
     let conversationID = UUID()
     let state = SFChatState()
     public static let shared = SFChat()
     
     var config: UIConfiguration?
+    var theme: SFTheme?
     
     public init() {}
     
-    public func setup(conf:SFConfig) {
+    public func setup(conf: SFConfig) {
         let orgId = conf.organizationID
         let developerName = conf.developerName
         let conversationId = UUID(uuidString: conf.conversationId)!
@@ -30,9 +27,14 @@ public class SFChat :@unchecked Sendable{
             SFChat.shared.state.objectWillChange.send()
         }
     }
-      public func setupTheme(conf:SFTheme) {
-
+    
+    public func setupTheme(conf: SFTheme) {
+        SFChat.shared.theme = conf
+        print("Theme applied: \(conf)")
         
+        DispatchQueue.main.async {
+            SFChat.shared.state.objectWillChange.send()
+        }
     }
     
     public func testSetup() {
@@ -49,9 +51,9 @@ public class SFChat :@unchecked Sendable{
         }
     }
     public func checkIfConnected(callback:@escaping (Bool) -> Void) {
-        if(SFChat.shared.config != nil){
+        if (SFChat.shared.config != nil) {
             callback(true)
-        }else{
+        } else {
             callback(false)
         }
     }
