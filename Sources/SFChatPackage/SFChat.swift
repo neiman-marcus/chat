@@ -30,6 +30,10 @@ public class SFChat :@unchecked Sendable{
             SFChat.shared.state.objectWillChange.send()
         }
     }
+      public func setupTheme(conf:SFTheme) {
+
+        
+    }
     
     public func testSetup() {
         let configData = StaticData().config
