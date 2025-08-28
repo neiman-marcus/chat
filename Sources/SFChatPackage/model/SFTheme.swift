@@ -1,3 +1,4 @@
+import Foundation
 public struct SFTheme: Codable {
     let onPrimary: String
     let onPrimaryContainer: String
