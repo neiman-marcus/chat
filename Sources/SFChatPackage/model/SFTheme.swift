@@ -15,13 +15,6 @@ public struct SFTheme: Codable {
     let onBackground: String
     let surface: String
     
-    // New keys for header / end chat styling
-    let endChatConfirmationBackground: String?
-    let endChatConfirmationButtonBackground: String?
-    let endChatConfirmationButtonCancelText: String?
-    let endChatConfirmationText: String?
-    let navigationText: String?
-
     enum CodingKeys: String, CodingKey {
         case onPrimary = "SMI.onPrimary"
         case onPrimaryContainer = "SMI.onPrimaryContainer"
@@ -38,13 +31,8 @@ public struct SFTheme: Codable {
         case onBackground = "SMI.onBackground"
         case surface = "SMI.surface"
         
-        // Header / End Chat
-        case navigationBackground = "SMI.navigationBackground"
-        case navigationIcon = "SMI.navigationIcon"
-        case endChatConfirmationBackground = "SMI.endChatConfirmationBackground"
-        case endChatConfirmationButtonBackground = "SMI.endChatConfirmationButtonBackground"
-        case endChatConfirmationButtonCancelText = "SMI.endChatConfirmationButtonCancelText"
-        case endChatConfirmationText = "SMI.endChatConfirmationText"
-        case navigationText = "SMI.navigationText"
+        case primary = "SMI.navigationBackground"
+        case onPrimary = "SMI.navigationIcon"
+        case onPrimary = "SMI.navigationText"
     }
 }
