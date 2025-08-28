@@ -30,9 +30,5 @@ public struct SFTheme: Codable {
         case background = "SMI.background"
         case onBackground = "SMI.onBackground"
         case surface = "SMI.surface"
-        
-        case primary = "SMI.navigationBackground"
-        case onPrimary = "SMI.navigationIcon"
-        case onPrimary = "SMI.navigationText"
     }
 }
