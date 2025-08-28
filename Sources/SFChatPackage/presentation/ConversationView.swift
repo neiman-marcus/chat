@@ -33,9 +33,9 @@ public struct ConversationView: View {
 
         // MARK: - CTA Buttons
         UIButton.appearance(whenContainedInInstancesOf: [UIView.self]).tintColor =
-            UIColor(named: "SMI.ctaButtons") ?? UIColor.systemBlue
+            UIColor(named: "SMI.ctaButtons") ?? .white
         UIButton.appearance(whenContainedInInstancesOf: [UIView.self]).backgroundColor =
-            UIColor(named: "SMI.ctaButtons") ?? UIColor.systemBlue
+            UIColor(named: "SMI.ctaButtons") ?? .white
         UIButton.appearance(whenContainedInInstancesOf: [UIView.self]).setTitleColor(
             UIColor(named: "SMI.ctaButtonsText") ?? .white,
             for: .normal
