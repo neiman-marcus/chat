@@ -2,16 +2,11 @@
 //  SFChat.swift
 //  SFChatPackage
 //
-//  Created by Vivek Kumar on 28/07/25.
-//
-//
-//  SFChat.swift
-//  SFChatPackage
-//
 
 import SMIClientUI
 import SMIClientCore
 import SwiftUICore
+import ServiceCloud
 
 public class SFChat: @unchecked Sendable {
     let conversationID = UUID()
@@ -19,60 +14,57 @@ public class SFChat: @unchecked Sendable {
     public static let shared = SFChat()
     
     var config: UIConfiguration?
-    var coreConfig: Configuration?
     
     public init() {}
     
+    // MARK: - Setup chat configuration
     public func setup(conf: SFConfig) {
         let orgId = conf.organizationID
         let developerName = conf.developerName
         let conversationId = UUID(uuidString: conf.conversationId)!
         let url = URL(string: conf.scrt2URL)!
         
+        // Apply header/branding before showing the chat
+        configureAppearance()
+        
         DispatchQueue.main.async {
-            SFChat.shared.config = UIConfiguration(serviceAPI: url,
-                                                   organizationId: orgId,
-                                                   developerName: developerName,
-                                                   conversationId: conversationId)
-            print("Config done \n \(String(describing: SFChat.shared.config))")
+            SFChat.shared.config = UIConfiguration(
+                serviceAPI: url,
+                organizationId: orgId,
+                developerName: developerName,
+                conversationId: conversationId
+            )
             SFChat.shared.state.isConfigured = true
             SFChat.shared.state.objectWillChange.send()
         }
     }
     
-    public func setupTheme(conf: SFTheme) {
-        // Theme setup can go here
+    // MARK: - Configure Salesforce appearance
+    private func configureAppearance() {
+        let appearance = SCAppearanceConfiguration()
+        
+        // Header background color
+        appearance.setColor(
+            UIColor(red: 0.1, green: 0.6, blue: 0.9, alpha: 1.0),
+            forName: .brandPrimary
+        )
+        
+        // Header text & icons
+        appearance.setColor(
+            UIColor.white,
+            forName: .brandSecondaryInverted
+        )
+        
+        // Apply configuration to Salesforce SDK
+        ServiceCloud.shared().appearanceConfiguration = appearance
     }
     
-    public func testSetup() {
-        let configData = StaticData().config
-        let url = URL(string: configData.url)!
-        DispatchQueue.main.async {
-            SFChat.shared.config = UIConfiguration(serviceAPI: url,
-                                                   organizationId: configData.organizationID,
-                                                   developerName: configData.developerName,
-                                                   conversationId: SFChat.shared.conversationID)
-            SFChat.shared.state.isConfigured = true
-            SFChat.shared.state.objectWillChange.send()
-        }
-    }
-    
-    public func checkIfConnected(callback: @escaping (Bool) -> Void) {
-        callback(SFChat.shared.config != nil)
-    }
-    
-    func setupTestCore() {
-        SFChatCore.shared.testSetup()
-    }
-}
-
-// MARK: - Public extension to expose internal properties
-public extension SFChat {
-    static var isReady: Bool {
+    // MARK: - Helper to check readiness
+    public static var isReady: Bool {
         return SFChat.shared.state.isConfigured
     }
     
-    static var sharedConfig: UIConfiguration? {
+    public static var sharedConfig: UIConfiguration? {
         return SFChat.shared.config
     }
 }

@@ -7,6 +7,7 @@ import SwiftUI
 import Foundation
 import SMIClientUI
 import SwiftUICore
+import ServiceCloud
 
 @MainActor
 public struct ConversationView: View {
@@ -27,30 +28,26 @@ public struct ConversationView: View {
                         }
                 }
             }
-            .navigationBarTitle("Support", displayMode: .inline)
             .navigationBarItems(leading: Button("Close") {
                 if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
                     topVC.dismiss(animated: true)
                 }
             })
             .onAppear {
-                // Configure navigation bar appearance
-                let appearance = UINavigationBarAppearance()
-                appearance.configureWithOpaqueBackground()
+                // Configure Salesforce SDK appearance (header colors)
+                let appearance = SCAppearanceConfiguration()
                 
-                // Header background color (hardcoded or hex)
-                appearance.backgroundColor = UIColor(red: 0.1, green: 0.6, blue: 0.9, alpha: 1.0) // light blue example
+                appearance.setColor(
+                    UIColor(red: 0.1, green: 0.6, blue: 0.9, alpha: 1.0),
+                    forName: .brandPrimary
+                )
                 
-                // Header title color
-                appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-                appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-
-                // Tint for back/close buttons
-                UINavigationBar.appearance().tintColor = UIColor.white
-
-                // Apply appearance
-                UINavigationBar.appearance().standardAppearance = appearance
-                UINavigationBar.appearance().scrollEdgeAppearance = appearance
+                appearance.setColor(
+                    UIColor.white,
+                    forName: .brandSecondaryInverted
+                )
+                
+                ServiceCloud.shared().appearanceConfiguration = appearance
             }
         }
     }
