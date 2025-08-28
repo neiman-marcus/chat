@@ -38,6 +38,8 @@ public struct SFTheme: Codable {
         case surface = "SMI.surface"
         
         // Header / End Chat
+        case navigationBackground = "SMI.navigationBackground"
+        case navigationIcon = "SMI.navigationIcon"
         case endChatConfirmationBackground = "SMI.endChatConfirmationBackground"
         case endChatConfirmationButtonBackground = "SMI.endChatConfirmationButtonBackground"
         case endChatConfirmationButtonCancelText = "SMI.endChatConfirmationButtonCancelText"
