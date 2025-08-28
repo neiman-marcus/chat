@@ -1,26 +1,26 @@
-//
-//  SFTheme.swift
-//  SFChatPackage
-//
-//  Created by Vivek Kumar on 20/08/25.
-//
-
-import Foundation
 public struct SFTheme: Codable {
-    let onPrimary : String
-    let onPrimaryContainer : String
-    let primary : String
-    let primaryContainer : String
-    let secondary : String
+    let onPrimary: String
+    let onPrimaryContainer: String
+    let primary: String
+    let primaryContainer: String
+    let secondary: String
     let secondaryContainer: String
-    let primaryVariant : String
-    let onSecondary : String
-    let secondaryActive : String
-    let secondaryHighlight : String
-    let onSecondaryVariant : String
-    let background : String
-    let onBackground : String
-    let surface : String
+    let primaryVariant: String
+    let onSecondary: String
+    let secondaryActive: String
+    let secondaryHighlight: String
+    let onSecondaryVariant: String
+    let background: String
+    let onBackground: String
+    let surface: String
+    
+    // New keys for header / end chat styling
+    let endChatConfirmationBackground: String?
+    let endChatConfirmationButtonBackground: String?
+    let endChatConfirmationButtonCancelText: String?
+    let endChatConfirmationText: String?
+    let navigationText: String?
+
     enum CodingKeys: String, CodingKey {
         case onPrimary = "SMI.onPrimary"
         case onPrimaryContainer = "SMI.onPrimaryContainer"
@@ -32,9 +32,16 @@ public struct SFTheme: Codable {
         case onSecondary = "SMI.onSecondary"
         case secondaryActive = "SMI.secondaryActive"
         case secondaryHighlight = "SMI.secondaryHighlight"
-        case onSecondaryVariant = "​​SMI.onSecondaryVariant"
+        case onSecondaryVariant = "SMI.onSecondaryVariant"
         case background = "SMI.background"
         case onBackground = "SMI.onBackground"
         case surface = "SMI.surface"
+        
+        // Header / End Chat
+        case endChatConfirmationBackground = "SMI.endChatConfirmationBackground"
+        case endChatConfirmationButtonBackground = "SMI.endChatConfirmationButtonBackground"
+        case endChatConfirmationButtonCancelText = "SMI.endChatConfirmationButtonCancelText"
+        case endChatConfirmationText = "SMI.endChatConfirmationText"
+        case navigationText = "SMI.navigationText"
     }
 }
