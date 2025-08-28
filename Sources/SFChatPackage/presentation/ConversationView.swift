@@ -1,3 +1,8 @@
+import SwiftUI
+import Foundation    
+import SMIClientUI
+import SwiftUICore
+
 @MainActor
 public struct ConversationView: View {
     public init() {}
