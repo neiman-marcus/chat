@@ -64,7 +64,7 @@ public class SFChat: @unchecked Sendable {
         return SFChat.shared.state.isConfigured
     }
     
-    public static var sharedConfig: UIConfiguration? {
+    static var sharedConfig: UIConfiguration? {
         return SFChat.shared.config
     }
 }
