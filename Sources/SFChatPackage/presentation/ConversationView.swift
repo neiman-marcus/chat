@@ -1,5 +1,10 @@
+//
+//  ConversationView.swift
+//  SFChatPackage
+//
+
 import SwiftUI
-import Foundation    
+import Foundation
 import SMIClientUI
 import SwiftUICore
 
@@ -11,7 +16,7 @@ public struct ConversationView: View {
     let timer = Timer.publish(every: 3, on: .current, in: .common).autoconnect()
 
     public var body: some View {
-        NavigationStack {                // ← Wrap everything in NavigationStack
+        NavigationView {                // ← Use NavigationView instead of NavigationStack
             VStack {
                 if SFChat.isReady, let config = SFChat.sharedConfig {
                     Interface(config)
@@ -22,16 +27,21 @@ public struct ConversationView: View {
                         }
                 }
             }
-            .navigationTitle("Support")   // ← This is the header title
-            .toolbar {                     // ← This adds buttons in the header
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Close") {     // ← Close button in header
-                        if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
-                            topVC.dismiss(animated: true)
-                        }
-                    }
+            .navigationBarTitle("Support", displayMode: .inline) // ← Header title
+            .navigationBarItems(leading: Button("Close") {    // ← Close button
+                if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
+                    topVC.dismiss(animated: true)
                 }
-            }
+            })
         }
+    }
+}
+
+@MainActor
+public struct ConversationContentView: View {
+    @State var config: UIConfiguration = SFChat.shared.config!
+    
+    public var body: some View {
+        Interface(config)
     }
 }
