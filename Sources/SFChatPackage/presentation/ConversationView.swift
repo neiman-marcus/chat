@@ -14,7 +14,7 @@ public struct ConversationView: View {
         // Apply navigation bar style globally
    let navAppearance = UINavigationBarAppearance()
         navAppearance.configureWithOpaqueBackground()
-        navAppearance.backgroundColor = UIColor(named: "SMI.navigationBackground") ?? UIColor.systemBlue
+        navAppearance.backgroundColor = UIColor(named: "SMI.navigationBackground") ?? .white
         navAppearance.titleTextAttributes = [
             .foregroundColor: UIColor(named: "SMI.navigationText") ?? .white
         ]
@@ -40,6 +40,7 @@ public struct ConversationView: View {
             UIColor(named: "SMI.ctaButtonsText") ?? .white,
             for: .normal
         )
+    
     }
 
     @State private var now = Date()
