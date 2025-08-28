@@ -12,16 +12,34 @@ import SwiftUICore
 public struct ConversationView: View {
     public init() {
         // Apply navigation bar style globally
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor(named: "SMI.navigationBackground") ?? UIColor.systemBlue
-        appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
-        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
+   let navAppearance = UINavigationBarAppearance()
+        navAppearance.configureWithOpaqueBackground()
+        navAppearance.backgroundColor = UIColor(named: "SMI.navigationBackground") ?? UIColor.systemBlue
+        navAppearance.titleTextAttributes = [
+            .foregroundColor: UIColor(named: "SMI.navigationText") ?? .white
+        ]
+        navAppearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor(named: "SMI.navigationText") ?? .white
+        ]
 
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-        UINavigationBar.appearance().compactAppearance = appearance
-        UINavigationBar.appearance().tintColor = UIColor(named: "SMI.navigationText") ?? .white // buttons
+        UINavigationBar.appearance().standardAppearance = navAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
+        UINavigationBar.appearance().compactAppearance = navAppearance
+        UINavigationBar.appearance().tintColor = UIColor(named: "SMI.navigationText") ?? .white // buttons in navbar
+
+        // MARK: - Banner Text
+        UILabel.appearance(whenContainedInInstancesOf: [UIToolbar.self]).textColor =
+            UIColor(named: "SMI.bannerText") ?? UIColor.label
+
+        // MARK: - CTA Buttons
+        UIButton.appearance(whenContainedInInstancesOf: [UIView.self]).tintColor =
+            UIColor(named: "SMI.ctaButtons") ?? UIColor.systemBlue
+        UIButton.appearance(whenContainedInInstancesOf: [UIView.self]).backgroundColor =
+            UIColor(named: "SMI.ctaButtons") ?? UIColor.systemBlue
+        UIButton.appearance(whenContainedInInstancesOf: [UIView.self]).setTitleColor(
+            UIColor(named: "SMI.ctaButtonsText") ?? .white,
+            for: .normal
+        )
     }
 
     @State private var now = Date()
