@@ -1,3 +1,4 @@
+//
 //  SFChat.swift
 //  SFChatPackage
 //
@@ -12,7 +13,6 @@ import SMIClientUI
 import SMIClientCore
 import SwiftUICore
 
-
 public class SFChat: @unchecked Sendable {
     let conversationID = UUID()
     let state = SFChatState()
@@ -20,15 +20,15 @@ public class SFChat: @unchecked Sendable {
     
     var config: UIConfiguration?
     var coreConfig: Configuration?
-
+    
     public init() {}
     
-    // MARK: - Setup chat configuration
     public func setup(conf: SFConfig) {
         let orgId = conf.organizationID
         let developerName = conf.developerName
         let conversationId = UUID(uuidString: conf.conversationId)!
         let url = URL(string: conf.scrt2URL)!
+        
         DispatchQueue.main.async {
             SFChat.shared.config = UIConfiguration(serviceAPI: url,
                                                    organizationId: orgId,
@@ -56,11 +56,11 @@ public class SFChat: @unchecked Sendable {
             SFChat.shared.state.objectWillChange.send()
         }
     }
-
+    
     public func checkIfConnected(callback: @escaping (Bool) -> Void) {
         callback(SFChat.shared.config != nil)
     }
-
+    
     func setupTestCore() {
         SFChatCore.shared.testSetup()
     }

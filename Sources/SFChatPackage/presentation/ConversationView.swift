@@ -10,7 +10,19 @@ import SwiftUICore
 
 @MainActor
 public struct ConversationView: View {
-    public init() {}
+    public init() {
+        // Apply navigation bar style globally
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(named: "SMI.navigationBackground") ?? UIColor.systemBlue
+        appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
+
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().tintColor = UIColor(named: "SMI.navigationText") ?? .white // buttons
+    }
 
     @State private var now = Date()
     let timer = Timer.publish(every: 3, on: .current, in: .common).autoconnect()
