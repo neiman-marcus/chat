@@ -19,7 +19,7 @@ public struct ConversationView: View {
        UINavigationBar.appearance().standardAppearance = appearance
        UINavigationBar.appearance().scrollEdgeAppearance = appearance
        UINavigationBar.appearance().compactAppearance = appearance
-       UINavigationBar.appearance().tintColor = UIColor(named: "SMI.navigationText") ?? .white // buttons
+       UINavigationBar.appearance().tintColor = UIColor(named: "SMI.navigationText") ?? .white 
    }
 
     @State private var now = Date()
@@ -36,19 +36,24 @@ public struct ConversationView: View {
                             self.now = Date()
                         }
                 }
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Image(systemName: "chevron.backward")
-                            .foregroundColor(.white)
-                    }
+            }         
+            .navigationBarItems(leading: Button(action: {
+                if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
+                    topVC.dismiss(animated: true)
                 }
-            }
+            }) {
+                Image(systemName: "chevron.backward") 
+                    .foregroundColor(.white) 
+            })         
         }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
+@MainActor
+public struct ConversationContentView: View {
+    @State var config: UIConfiguration = SFChat.shared.config!
+    
+    public var body: some View {
+        Interface(config)
+    }
+}
