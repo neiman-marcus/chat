@@ -37,7 +37,7 @@ public struct ConversationView: View {
                         }
                 }
             }
-            .navigationBarTitle("Support", displayMode: .inline)
+            // .navigationBarTitle("Support", displayMode: .inline)
             .navigationBarItems(leading: Button("Close") {
                 if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
                     topVC.dismiss(animated: true)
