@@ -30,6 +30,13 @@ public struct ConversationView: View {
             VStack {
                 if SFChat.isReady, let config = SFChat.sharedConfig {
                     Interface(config)
+                    .onAppear {
+                            // Remove the 3-dots menu button
+                            if let nav = UIApplication.shared.windows.first?.rootViewController as? UINavigationController {
+                                nav.topViewController?.navigationItem.rightBarButtonItem = nil
+                                nav.topViewController?.navigationItem.rightBarButtonItems = []
+                            }
+                        }
                 } else {
                     Text("Loading... \(now)")
                         .onReceive(timer) { _ in
