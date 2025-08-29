@@ -38,11 +38,19 @@ public struct ConversationView: View {
                 }
             }
             // .navigationBarTitle("Support", displayMode: .inline)
-            .navigationBarItems(leading: Button("Close") {
+            // .navigationBarItems(leading: Button("Close") {
+            //     if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
+            //         topVC.dismiss(animated: true)
+            //     }
+            // })   
+            .navigationBarItems(leading: Button(action: {
                 if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
                     topVC.dismiss(animated: true)
                 }
-            })            
+            }) {
+                Image(systemName: "chevron.backward") // back arrow
+                    .foregroundColor(.white) // make it white
+            })         
         }
     }
 }
