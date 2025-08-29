@@ -29,14 +29,7 @@ public struct ConversationView: View {
         NavigationView {
             VStack {
                 if SFChat.isReady, let config = SFChat.sharedConfig {
-                    Interface(config)
-                    .onAppear {
-                            // Remove the 3-dots menu button
-                            if let nav = UIApplication.shared.windows.first?.rootViewController as? UINavigationController {
-                                nav.topViewController?.navigationItem.rightBarButtonItem = nil
-                                nav.topViewController?.navigationItem.rightBarButtonItems = []
-                            }
-                        }
+                    Interface(config)            
                 } else {
                     Text("Loading... \(now)")
                         .onReceive(timer) { _ in
@@ -44,29 +37,18 @@ public struct ConversationView: View {
                         }
                 }
             }
-            // .navigationBarTitle("Support", displayMode: .inline)
-            // .navigationBarItems(leading: Button("Close") {
-            //     if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
-            //         topVC.dismiss(animated: true)
-            //     }
-            // })   
-            .navigationBarItems(leading: Button(action: {
-                if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
-                    topVC.dismiss(animated: true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image(systemName: "chevron.backward")
+                            .foregroundColor(.white)
+                    }
                 }
-            }) {
-                Image(systemName: "chevron.backward") // back arrow
-                    .foregroundColor(.white) // make it white
-            })         
+            }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
-@MainActor
-public struct ConversationContentView: View {
-    @State var config: UIConfiguration = SFChat.shared.config!
-    
-    public var body: some View {
-        Interface(config)
-    }
-}
