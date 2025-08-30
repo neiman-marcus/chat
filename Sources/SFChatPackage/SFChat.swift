@@ -20,6 +20,7 @@ public class SFChat: @unchecked Sendable {
     
     var config: UIConfiguration?
     var coreConfig: Configuration?
+    var conversationClient: ConversationClient?
     
     public init() {}
     
@@ -28,12 +29,25 @@ public class SFChat: @unchecked Sendable {
         let developerName = conf.developerName
         let conversationId = UUID(uuidString: conf.conversationId)!
         let url = URL(string: conf.scrt2URL)!
-        
-        DispatchQueue.main.async {
-            SFChat.shared.config = UIConfiguration(serviceAPI: url,
-                                                   organizationId: orgId,
-                                                   developerName: developerName,
-                                                   conversationId: conversationId)
+        var config: Configuration {
+                Configuration(serviceAPI: url,
+                              organizationId: orgId,
+                              developerName: developerName,
+                              userVerificationRequired: false)
+            }
+        var remoteLocaleMap: [String: String] {
+            var result: [String: String] = [:]
+
+            return result
+        }
+        DispatchQueue.main.async { [self] in
+            SFChat.shared.config = UIConfiguration(configuration: config, conversationId: conversationId, remoteLocaleMap: remoteLocaleMap, urlDisplayMode: .inlineBrowser)
+            SFChat.shared.config?.conversationOptionsConfiguration = ConversationOptionsConfiguration(allowEndChat: true)
+            SFChat.shared.config?.transcriptConfiguration = TranscriptConfiguration(allowTranscriptDownload: true)
+            SFChat.shared.config?.attachmentConfiguration = AttachmentConfiguration(endUserToAgent: true)
+            var coreClient = CoreFactory.create(withConfig: SFChat.shared.config!)
+            conversationClient = coreClient.conversationClient(with: conversationId)
+            conversationClient?.send(message: "Hello, I need Customer Service assistance")
             print("Config done \n \(String(describing: SFChat.shared.config))")
             SFChat.shared.state.isConfigured = true
             SFChat.shared.state.objectWillChange.send()
