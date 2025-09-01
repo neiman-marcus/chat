@@ -50,7 +50,13 @@ public struct ConversationView: View {
             }) {
                 Image(systemName: "chevron.backward") // back arrow
                     .foregroundColor(.white) // make it white
-            })         
+            })  
+            .onAppear {
+                UINavigationBar.appearance().isHidden = false
+                if let nav = UIApplication.shared.windows.first?.rootViewController as? UINavigationController {
+                    nav.setNavigationBarHidden(false, animated: false)
+                }
+            }       
         }
     }
 }
