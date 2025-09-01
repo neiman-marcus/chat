@@ -26,7 +26,20 @@ public struct ConversationView: View {
     @State private var now = Date()
     @State private var isChatActive = false // Track navigation state
     let timer = Timer.publish(every: 3, on: .current, in: .common).autoconnect()
-    @Environment(\.dismiss) private var dismiss // Modern dismiss API
+    @Environment(\.dismiss) private var dismiss // Modern dismiss API (iOS 15+)
+
+    private func applyNavigationBarAppearance() {
+        // Re-apply navigation bar appearance
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(named: "SMI.navigationBackground") ?? UIColor.systemBlue
+        appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().tintColor = UIColor(named: "SMI.navigationText") ?? .white
+    }
 
     public var body: some View {
         NavigationView {
@@ -47,10 +60,13 @@ public struct ConversationView: View {
                     }
                     .hidden() // Hide the NavigationLink
                     .onAppear {
-                        isChatActive = true // Activate chat navigation
+                        isChatActive = true
+                        print("ConversationView appeared, isChatActive: \(isChatActive)")
+                        applyNavigationBarAppearance() // Re-apply on appear
                     }
                     .onDisappear {
-                        isChatActive = false // Reset when leaving
+                        isChatActive = false
+                        print("ConversationView disappeared, isChatActive: \(isChatActive)")
                     }
                     .navigationTitle("SMI.Chat.Feed.Title")
                     .navigationBarItems(leading: Button(action: {
@@ -71,34 +87,14 @@ public struct ConversationView: View {
                             Image(systemName: "chevron.backward")
                                 .foregroundColor(.white)
                         })
+                        .onAppear {
+                            applyNavigationBarAppearance() // Re-apply for loading state
+                        }
                 }
             }
             .navigationViewStyle(.stack) // Enforce single stack navigation
             .onAppear {
-                // Re-apply navigation bar appearance
-                let appearance = UINavigationBarAppearance()
-                appearance.configureWithOpaqueBackground()
-                appearance.backgroundColor = UIColor(named: "SMI.navigationBackground") ?? UIColor.systemBlue
-                appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
-                appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
-                UINavigationBar.appearance().standardAppearance = appearance
-                UINavigationBar.appearance().scrollEdgeAppearance = appearance
-                UINavigationBar.appearance().compactAppearance = appearance
-                UINavigationBar.appearance().tintColor = UIColor(named: "SMI.navigationText") ?? .white
-            }
-            .onChange(of: isChatActive) { oldValue, newValue in
-                if newValue {
-                    // Re-apply navigation bar appearance when returning
-                    let appearance = UINavigationBarAppearance()
-                    appearance.configureWithOpaqueBackground()
-                    appearance.backgroundColor = UIColor(named: "SMI.navigationBackground") ?? UIColor.systemBlue
-                    appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
-                    appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
-                    UINavigationBar.appearance().standardAppearance = appearance
-                    UINavigationBar.appearance().scrollEdgeAppearance = appearance
-                    UINavigationBar.appearance().compactAppearance = appearance
-                    UINavigationBar.appearance().tintColor = UIColor(named: "SMI.navigationText") ?? .white
-                }
+                applyNavigationBarAppearance() // Initial appearance setup
             }
         }
     }
@@ -108,6 +104,19 @@ public struct ConversationView: View {
 public struct ConversationContentView: View {
     @State var config: UIConfiguration = SFChat.shared.config!
     @Environment(\.dismiss) private var dismiss
+
+    private func applyNavigationBarAppearance() {
+        // Re-apply navigation bar appearance
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(named: "SMI.navigationBackground") ?? UIColor.systemBlue
+        appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().tintColor = UIColor(named: "SMI.navigationText") ?? .white
+    }
 
     public var body: some View {
         Interface(config)
@@ -119,16 +128,7 @@ public struct ConversationContentView: View {
                     .foregroundColor(.white)
             })
             .onAppear {
-                // Re-apply navigation bar appearance
-                let appearance = UINavigationBarAppearance()
-                appearance.configureWithOpaqueBackground()
-                appearance.backgroundColor = UIColor(named: "SMI.navigationBackground") ?? UIColor.systemBlue
-                appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
-                appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
-                UINavigationBar.appearance().standardAppearance = appearance
-                UINavigationBar.appearance().scrollEdgeAppearance = appearance
-                UINavigationBar.appearance().compactAppearance = appearance
-                UINavigationBar.appearance().tintColor = UIColor(named: "SMI.navigationText") ?? .white
+                applyNavigationBarAppearance() // Re-apply on appear
             }
     }
 }
