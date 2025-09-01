@@ -28,19 +28,16 @@ public struct ConversationView: View {
     public var body: some View {
         NavigationView {
             VStack {
-                if SFChat.isReady {
-                    if var config = SFChat.sharedConfig {
-                        // ✅ Disable file/attachment picker to prevent freeze
-                        config.isFileSelectionEnabled = false
-                        Interface(config)
-                    }
+                if SFChat.isReady, let config = SFChat.sharedConfig {
+                    config.isFileSelectionEnabled = false
+                    Interface(config)            
                 } else {
                     Text("Loading... \(now)")
                         .onReceive(timer) { _ in
                             self.now = Date()
                         }
                 }
-            }
+            }         
             .navigationBarItems(leading: Button(action: {
                 if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
                     topVC.dismiss(animated: true)
@@ -48,20 +45,17 @@ public struct ConversationView: View {
             }) {
                 Image(systemName: "chevron.backward") 
                     .foregroundColor(.white) 
-            })
+            })         
         }
     }
 }
 
 @MainActor
 public struct ConversationContentView: View {
-    @State var config: UIConfiguration = {
-        var conf = SFChat.shared.config!
-        conf.isFileSelectionEnabled = false // ✅ same fix here
-        return conf
-    }()
-
+    @State var config: UIConfiguration = SFChat.shared.config!
+    config.isFileSelectionEnabled = false
     public var body: some View {
         Interface(config)
     }
 }
+
