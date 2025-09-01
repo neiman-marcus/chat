@@ -1,12 +1,18 @@
+//
+//  ConversationView.swift
+//  SFChatPackage
+//
+
 import SwiftUI
-import UIKit          // Needed for UIApplication & UINavigationBarAppearance
+import UIKit
 import Foundation
-import SMIClientUI    // Your chat SDK
-import SwiftUICore 
+import SMIClientUI
+import SwiftUICore
 
 @MainActor
 public struct ConversationView: View {
     public init() { 
+        // UINavigationBar appearance setup
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(named: "SMI.navigationBackground") ?? UIColor.systemBlue
@@ -15,57 +21,58 @@ public struct ConversationView: View {
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance
-        UINavigationBar.appearance().tintColor = UIColor(named: "SMI.navigationText") ?? .white 
+        UINavigationBar.appearance().tintColor = UIColor(named: "SMI.navigationText") ?? .white
     }
 
     @State private var now = Date()
     let timer = Timer.publish(every: 3, on: .current, in: .common).autoconnect()
-
+    
     public var body: some View {
         NavigationView {
             VStack {
                 if SFChat.isReady, let config = SFChat.sharedConfig {
-                    Interface(config)   
+                    Interface(config)
                 } else {
                     Text("Loading... \(now)")
                         .onReceive(timer) { _ in
                             self.now = Date()
                         }
                 }
-            }         
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                // Left back button
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
-                            // topVC.dismiss(animated: true)
-                        }
-                    }) {
-                        Image(systemName: "chevron.backward")
-                            .foregroundColor(.white)
-                    }
-                }
                 
-                // Center title
-                ToolbarItem(placement: .principal) {
-                    Text(NSLocalizedString("conversation_title", comment: "Conversation Header"))
+                Spacer()
+                
+                // Right star button as NavigationLink
+                NavigationLink(destination: NextScreenView()) {
+                    Image(systemName: "star")
+                        .resizable()
+                        .frame(width: 30, height: 30)
                         .foregroundColor(.white)
-                        .font(.headline)
                 }
-                
-                // Right button
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        print("Right button tapped")
-                    }) {
-                        Image(systemName: "star")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(.white)
-                    }
-                }
+                .padding()
             }
+            .navigationBarTitle(NSLocalizedString("conversation_title", comment: "Customer support"), displayMode: .inline)
         }
+    }
+}
+
+@MainActor
+public struct NextScreenView: View {
+    public var body: some View {
+        VStack {
+            Text("Next Screen Content")
+                .font(.title)
+                .padding()
+            Spacer()
+        }
+        .navigationBarTitle(NSLocalizedString("next_screen_title", comment: "Next Screen Header"), displayMode: .inline)
+    }
+}
+
+@MainActor
+public struct ConversationContentView: View {
+    @State var config: UIConfiguration = SFChat.shared.config!
+    
+    public var body: some View {
+        Interface(config)
     }
 }
