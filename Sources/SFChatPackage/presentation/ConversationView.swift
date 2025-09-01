@@ -30,7 +30,6 @@ public struct ConversationView: View {
             VStack {
                 if SFChat.isReady, let config = SFChat.sharedConfig {
                     Interface(config)   
-                             
                 } else {
                     Text("Loading... \(now)")
                         .onReceive(timer) { _ in
@@ -38,9 +37,10 @@ public struct ConversationView: View {
                         }
                 }
             }         
+            
             .navigationBarItems(leading: Button(action: {
                 if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
-                    topVC.dismiss(animated: true)
+                    // topVC.dismiss(animated: true)
                 }
             }) {
                 Image(systemName: "chevron.backward") 
