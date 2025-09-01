@@ -29,8 +29,8 @@ public struct ConversationView: View {
         NavigationView {
             VStack {
                 if SFChat.isReady, let config = SFChat.sharedConfig {
-                    config.isFileSelectionEnabled = false
-                    Interface(config)            
+                    Interface(config)   
+                             
                 } else {
                     Text("Loading... \(now)")
                         .onReceive(timer) { _ in
@@ -53,7 +53,7 @@ public struct ConversationView: View {
 @MainActor
 public struct ConversationContentView: View {
     @State var config: UIConfiguration = SFChat.shared.config!
-    config.isFileSelectionEnabled = false
+    
     public var body: some View {
         Interface(config)
     }
