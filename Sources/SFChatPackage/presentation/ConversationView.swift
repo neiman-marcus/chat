@@ -13,20 +13,21 @@ import SwiftUICore
 struct CustomNavigationBar: ViewModifier {
     let title: String
     let trailingAction: () -> Void
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) var presentationMode   // ✅ For modal dismissal
 
     func body(content: Content) -> some View {
         content
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // Left: Always show custom back button
+                // Left: Always show plain close (X) icon
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
                     }) {
-                        Image(systemName: "chevron.backward")
+                        Image(systemName: "xmark")
                             .foregroundColor(.white)
                     }
+                    .buttonStyle(.plain) // ✅ ensures it’s just an icon, no nav styling
                 }
                 
                 // Center: Title
@@ -42,6 +43,7 @@ struct CustomNavigationBar: ViewModifier {
                         Image(systemName: "star")
                             .foregroundColor(.white)
                     }
+                    .buttonStyle(.plain)
                 }
             }
     }
@@ -86,7 +88,9 @@ public struct ConversationView: View {
                 }
                 Spacer()
             }
-            .customNavigationBar(title: NSLocalizedString("conversation_title", comment: "Conversation Header")) {
+            .customNavigationBar(
+                title: NSLocalizedString("conversation_title", comment: "Conversation Header")
+            ) {
                 print("Star tapped")
             }
         }
