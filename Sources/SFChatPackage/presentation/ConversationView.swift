@@ -19,13 +19,15 @@ struct CustomNavigationBar: ViewModifier {
         content
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // Left: Custom back button
+                // Left: Show custom back button only if view can actually be dismissed
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()  // ✅ Dismiss screen
-                    }) {
-                        Image(systemName: "chevron.backward")
-                            .foregroundColor(.white)
+                    if presentationMode.wrappedValue.isPresented {
+                        Button(action: {
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            Image(systemName: "chevron.backward")
+                                .foregroundColor(.white)
+                        }
                     }
                 }
                 
@@ -85,36 +87,10 @@ public struct ConversationView: View {
                         }
                 }
                 Spacer()
-                
-                // Example navigation to next screen
-                NavigationLink(destination: NextScreenView()) {
-                    Text("Go to Next Screen")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(8)
-                }
-                .padding()
             }
             .customNavigationBar(title: NSLocalizedString("conversation_title", comment: "Conversation Header")) {
                 print("Star tapped")
             }
-        }
-    }
-}
-
-// MARK: - Next Screen View
-@MainActor
-public struct NextScreenView: View {
-    public var body: some View {
-        VStack {
-            Text("Next Screen Content")
-                .font(.title)
-                .padding()
-            Spacer()
-        }
-        .customNavigationBar(title: NSLocalizedString("next_screen_title", comment: "Next Screen Header")) {
-            print("Star tapped on next screen")
         }
     }
 }
