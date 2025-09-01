@@ -1,3 +1,9 @@
+import SwiftUI
+import UIKit          // Needed for UIApplication & UINavigationBarAppearance
+import Foundation
+import SMIClientUI    // Your chat SDK
+import SwiftUICore 
+
 @MainActor
 public struct ConversationView: View {
     public init() { 
