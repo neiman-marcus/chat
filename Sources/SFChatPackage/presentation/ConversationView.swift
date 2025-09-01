@@ -13,21 +13,19 @@ import SwiftUICore
 struct CustomNavigationBar: ViewModifier {
     let title: String
     let trailingAction: () -> Void
-    @Environment(\.presentationMode) var presentationMode   // ✅ Use environment for dismissal
+    @Environment(\.presentationMode) var presentationMode
 
     func body(content: Content) -> some View {
         content
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // Left: Show custom back button only if view can actually be dismissed
+                // Left: Always show custom back button
                 ToolbarItem(placement: .navigationBarLeading) {
-                    if presentationMode.wrappedValue.isPresented {
-                        Button(action: {
-                            presentationMode.wrappedValue.dismiss()
-                        }) {
-                            Image(systemName: "chevron.backward")
-                                .foregroundColor(.white)
-                        }
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image(systemName: "chevron.backward")
+                            .foregroundColor(.white)
                     }
                 }
                 
