@@ -35,8 +35,8 @@ public struct ConversationView: View {
                     NavigationLink(
                         destination: Interface(config)
                             .navigationTitle("SMI.Chat.Feed.Title")
-                            .toolbar {
-                                ToolbarItem(placement: .navigationBarLeading) {
+                            .toolbar(content: {
+                                ToolbarItem(placement: .topBarLeading) {
                                     Button(action: {
                                         dismiss()
                                     }) {
@@ -44,7 +44,7 @@ public struct ConversationView: View {
                                             .foregroundColor(.white)
                                     }
                                 }
-                            },
+                            }),
                         isActive: $isChatActive
                     ) {
                         EmptyView() // Invisible trigger
@@ -57,8 +57,8 @@ public struct ConversationView: View {
                         isChatActive = false // Reset when leaving
                     }
                     .navigationTitle("SMI.Chat.Feed.Title")
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
+                    .toolbar(content: {
+                        ToolbarItem(placement: .topBarLeading) {
                             Button(action: {
                                 dismiss()
                             }) {
@@ -66,23 +66,23 @@ public struct ConversationView: View {
                                     .foregroundColor(.white)
                             }
                         }
-                    }
+                    })
                 } else {
                     Text("Loading... \(now)")
                         .onReceive(timer) { _ in
                             self.now = Date()
                         }
                         .navigationTitle("SMI.Chat.Feed.Title")
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
+                        .toolbar(content: {
+                            ToolbarItem(placement: .topBarLeading) {
                                 Button(action: {
                                     dismiss()
                                 }) {
                                     Image(systemName: "chevron.backward")
                                         .foregroundColor(.white)
+                                    }
                                 }
-                            }
-                        }
+                            })
                 }
             }
             .navigationViewStyle(.stack) // Enforce single stack navigation
@@ -124,8 +124,8 @@ public struct ConversationContentView: View {
     public var body: some View {
         Interface(config)
             .navigationTitle("SMI.Chat.Feed.Title")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+            .toolbar(content: {
+                ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
                         dismiss()
                     }) {
@@ -133,7 +133,7 @@ public struct ConversationContentView: View {
                             .foregroundColor(.white)
                     }
                 }
-            }
+            })
             .onAppear {
                 // Re-apply navigation bar appearance
                 let appearance = UINavigationBarAppearance()
