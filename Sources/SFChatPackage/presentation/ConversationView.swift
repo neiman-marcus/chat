@@ -13,7 +13,7 @@ import SwiftUICore
 struct CustomNavigationBar: ViewModifier {
     let title: String
     let trailingAction: () -> Void
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) var presentationMode   // ✅ Use environment for dismissal
 
     func body(content: Content) -> some View {
         content
@@ -22,7 +22,7 @@ struct CustomNavigationBar: ViewModifier {
                 // Left: Custom back button
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
-                        presentationMode.wrappedValue.dismiss()
+                        presentationMode.wrappedValue.dismiss()  // ✅ Dismiss screen
                     }) {
                         Image(systemName: "chevron.backward")
                             .foregroundColor(.white)
@@ -40,8 +40,6 @@ struct CustomNavigationBar: ViewModifier {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: trailingAction) {
                         Image(systemName: "star")
-                            .resizable()
-                            .frame(width: 30, height: 30)
                             .foregroundColor(.white)
                     }
                 }
@@ -49,6 +47,7 @@ struct CustomNavigationBar: ViewModifier {
     }
 }
 
+// MARK: - View Extension
 extension View {
     func customNavigationBar(title: String, trailingAction: @escaping () -> Void) -> some View {
         self.modifier(CustomNavigationBar(title: title, trailingAction: trailingAction))
@@ -64,4 +63,68 @@ public struct ConversationView: View {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(named: "SMI.navigationBackground") ?? UIColor.systemBlue
         appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
-        app
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "SMI.navigationText") ?? .white]
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().tintColor = UIColor(named: "SMI.navigationText") ?? .white
+    }
+
+    @State private var now = Date()
+    let timer = Timer.publish(every: 3, on: .current, in: .common).autoconnect()
+
+    public var body: some View {
+        NavigationView {
+            VStack {
+                if SFChat.isReady, let config = SFChat.sharedConfig {
+                    Interface(config)
+                } else {
+                    Text("Loading... \(now)")
+                        .onReceive(timer) { _ in
+                            self.now = Date()
+                        }
+                }
+                Spacer()
+                
+                // Example navigation to next screen
+                NavigationLink(destination: NextScreenView()) {
+                    Text("Go to Next Screen")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                }
+                .padding()
+            }
+            .customNavigationBar(title: NSLocalizedString("conversation_title", comment: "Conversation Header")) {
+                print("Star tapped")
+            }
+        }
+    }
+}
+
+// MARK: - Next Screen View
+@MainActor
+public struct NextScreenView: View {
+    public var body: some View {
+        VStack {
+            Text("Next Screen Content")
+                .font(.title)
+                .padding()
+            Spacer()
+        }
+        .customNavigationBar(title: NSLocalizedString("next_screen_title", comment: "Next Screen Header")) {
+            print("Star tapped on next screen")
+        }
+    }
+}
+
+// MARK: - Conversation Content View
+@MainActor
+public struct ConversationContentView: View {
+    @State var config: UIConfiguration = SFChat.shared.config!
+    
+    public var body: some View {
+        Interface(config)
+    }
+}
