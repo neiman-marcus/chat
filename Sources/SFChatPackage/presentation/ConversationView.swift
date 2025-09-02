@@ -30,7 +30,7 @@ public struct ConversationView: View {
     let timer = Timer.publish(every: 3, on: .current, in: .common).autoconnect()
 
     public var body: some View {
-        NavigationView {
+      NavigationView {
             VStack {
                 if SFChat.isReady, let config = SFChat.sharedConfig {
                     Interface(config)
@@ -42,21 +42,18 @@ public struct ConversationView: View {
                 }
             }
             .navigationBarTitle("Conversation", displayMode: .inline)
-            .navigationBarBackButtonHidden(true) // hide system back on root only
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
-                            topVC.dismiss(animated: true)
-                        }
-                    }) {
-                        Image(systemName: "xmark")
-                            .foregroundColor(.white)
+            .navigationBarBackButtonHidden(true)
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    if let topVC = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
+                        topVC.dismiss(animated: true)
                     }
+                }) {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.white)
                 }
-            }
-            .onAppear {
-                // reapply toolbar when coming back from pushed screens
             }
         }
     }
