@@ -42,7 +42,7 @@ public struct ConversationView: View {
                 }
             }
             .navigationBarTitle("Conversation", displayMode: .inline)
-            .navigationBarBackButtonHidden(true) // hide default back on root
+            .navigationBarBackButtonHidden(true) // hide system back on root only
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
@@ -54,6 +54,9 @@ public struct ConversationView: View {
                             .foregroundColor(.white)
                     }
                 }
+            }
+            .onAppear {
+                // reapply toolbar when coming back from pushed screens
             }
         }
     }
