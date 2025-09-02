@@ -47,7 +47,7 @@ public class SFChat: @unchecked Sendable {
             SFChat.shared.config?.attachmentConfiguration = AttachmentConfiguration(endUserToAgent: true)
             var coreClient = CoreFactory.create(withConfig: SFChat.shared.config!)
             conversationClient = coreClient.conversationClient(with: conversationId)
-            conversationClient?.send(message: "Hello, I need Customer Service assistance")
+            conversationClient?.send(message: "I need customer service assistance.")
             print("Config done \n \(String(describing: SFChat.shared.config))")
             SFChat.shared.state.isConfigured = true
             SFChat.shared.state.objectWillChange.send()
