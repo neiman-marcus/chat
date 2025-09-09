@@ -15,7 +15,7 @@ public struct SFConfig: Codable {
         case developerName = "DeveloperName"
         case url = "Url"
         case scrt2URL = "scrt2URL"
-        case conversationId = "conversation_id"
+        case conversationId = "conversationId"
     }
 }
 

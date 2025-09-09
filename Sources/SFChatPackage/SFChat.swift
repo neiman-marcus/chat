@@ -24,30 +24,40 @@ public class SFChat: @unchecked Sendable {
     
     public init() {}
     
+    private var hasInitialMessageBeenSent = false
+
     public func setup(conf: SFConfig) {
         let orgId = conf.organizationID
         let developerName = conf.developerName
-        let conversationId = UUID(uuidString: conf.conversationId)!
+        let conversationUUID = UUID(uuidString: conf.conversationId)!
         let url = URL(string: conf.scrt2URL)!
+        
         var config: Configuration {
-                Configuration(serviceAPI: url,
-                              organizationId: orgId,
-                              developerName: developerName,
-                              userVerificationRequired: false)
-            }
+            Configuration(serviceAPI: url,
+                          organizationId: orgId,
+                          developerName: developerName,
+                          userVerificationRequired: false)
+        }
+        
         var remoteLocaleMap: [String: String] {
             var result: [String: String] = [:]
-
             return result
         }
+        
         DispatchQueue.main.async { [self] in
-            SFChat.shared.config = UIConfiguration(configuration: config, conversationId: conversationId, remoteLocaleMap: remoteLocaleMap, urlDisplayMode: .inlineBrowser)
+            SFChat.shared.config = UIConfiguration(configuration: config, conversationId: conversationUUID, remoteLocaleMap: remoteLocaleMap, urlDisplayMode: .inlineBrowser)
             SFChat.shared.config?.conversationOptionsConfiguration = ConversationOptionsConfiguration(allowEndChat: true)
             SFChat.shared.config?.transcriptConfiguration = TranscriptConfiguration(allowTranscriptDownload: true)
             SFChat.shared.config?.attachmentConfiguration = AttachmentConfiguration(endUserToAgent: true)
             var coreClient = CoreFactory.create(withConfig: SFChat.shared.config!)
-            conversationClient = coreClient.conversationClient(with: conversationId)
-            conversationClient?.send(message: "I need customer service assistance.")
+            conversationClient = coreClient.conversationClient(with: conversationUUID)
+            
+            // Only send initial message if it hasn't been sent yet
+            if !hasInitialMessageBeenSent {
+                conversationClient?.send(message: "I need customer service assistance.")
+                hasInitialMessageBeenSent = true
+            }
+            
             print("Config done \n \(String(describing: SFChat.shared.config))")
             SFChat.shared.state.isConfigured = true
             SFChat.shared.state.objectWillChange.send()
