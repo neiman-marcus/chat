@@ -52,10 +52,15 @@ public class SFChat: @unchecked Sendable {
             var coreClient = CoreFactory.create(withConfig: SFChat.shared.config!)
             conversationClient = coreClient.conversationClient(with: conversationUUID)
             
-            // Only send initial message if it hasn't been sent yet
             if !hasInitialMessageBeenSent {
-                conversationClient?.send(message: "I need customer service assistance.")
-                hasInitialMessageBeenSent = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+                    guard let self = self, SFChat.shared.state.isConfigured else {
+                        print("⚠️ Chat UI not fully ready yet. Skipping initial message send.")
+                        return
+                    }
+                    self.conversationClient?.send(message: "I need customer service assistance.")
+                    self.hasInitialMessageBeenSent = true
+                }
             }
             
             print("Config done \n \(String(describing: SFChat.shared.config))")
